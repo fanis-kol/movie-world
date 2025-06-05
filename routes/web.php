@@ -10,7 +10,7 @@ Route::get('/', [MovieController::class, 'index']);
 
 Route::get('/load-more', [MovieController::class, 'loadMore']);
 
-Route::get('/new-movie', [MovieController::class, 'newMovie']);
+Route::get('/new-movie', [MovieController::class, 'newMovie'])->name('new.movie');
 
 
 Route::middleware('auth')->group(function () {

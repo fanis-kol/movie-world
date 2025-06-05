@@ -11,8 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body class="bg-light text-dark">
-    @if(Auth::user())
-    @endif
+    @include('/partials/navigation-bar')
     <main class="container my-4">
         @yield('content')
     </main>
