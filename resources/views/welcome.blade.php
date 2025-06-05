@@ -23,19 +23,23 @@
         <p class="lead text-muted">Our complete movie list — <span class="fw-bold">{{$allMovies}}</span> titles.</p>
     </div>
 
-    <div class="row">
-        <form id="filter-form" class="text-end col-10 mx-auto" method="GET" class="mb-3">
-            <select name="sort" id="sort" class="form-select w-auto d-inline-block">
-                <option value="" selected >Newest</option>
-                <option value="likes" {{ request('sort') === 'likes' ? 'selected' : '' }}>Most Liked</option>
-                <option value="hates" {{ request('sort') === 'hates' ? 'selected' : '' }}>Most Hated</option>
-            </select>
+    <div class="row d-flex align-items-center">
+        <div class="col-6 col-lg-4 offset-lg-1 text-start">
+            <a href="{{ url('/') }}" class="btn btn-outline-secondary">Reset Filters</a>
+        </div>
+        <div class="col-6 text-end">
+            <form id="filter-form" method="GET" class="d-inline-block">
+                <select name="sort" id="sort" class="form-select w-auto d-inline-block">
+                    <option value="" {{ request('sort') === null ? 'selected' : '' }}>Newest</option>
+                    <option value="likes" {{ request('sort') === 'likes' ? 'selected' : '' }}>Most Liked</option>
+                    <option value="hates" {{ request('sort') === 'hates' ? 'selected' : '' }}>Most Hated</option>
+                </select>
 
-            @if(request()->filled('user_id'))
-                <input type="hidden" name="user_id" value="{{ request('user_id') }}">
-            @endif
-        </form>
-
+                @if(request()->filled('user_id'))
+                    <input type="hidden" name="user_id" value="{{ request('user_id') }}">
+                @endif
+            </form>
+        </div>
     </div>
 
     <div class="row justify-content-center">
