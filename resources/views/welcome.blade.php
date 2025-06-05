@@ -18,18 +18,20 @@
         @endif
     </header>
 
-    <div class="text-center mb-5">
+    <div class="row text-center mb-5">
         <h1 class="display-5 fw-bold">Welcome to Movie World</h1>
         <p class="lead text-muted">Our complete movie list — <span class="fw-bold">{{$allMovies}}</span> titles.</p>
     </div>
 
-    <form id="filter-form" class="text-end" method="GET" class="mb-3">
-        <select name="sort" id="sort" class="form-select w-auto d-inline-block">
-            <option value="" selected >Newest</option>
-            <option value="likes" {{ request('sort') === 'likes' ? 'selected' : '' }}>Most Liked</option>
-            <option value="hates" {{ request('sort') === 'hates' ? 'selected' : '' }}>Most Hated</option>
-        </select>
-    </form>
+    <div class="row">
+        <form id="filter-form" class="text-end col-10 mx-auto" method="GET" class="mb-3">
+            <select name="sort" id="sort" class="form-select w-auto d-inline-block">
+                <option value="" selected >Newest</option>
+                <option value="likes" {{ request('sort') === 'likes' ? 'selected' : '' }}>Most Liked</option>
+                <option value="hates" {{ request('sort') === 'hates' ? 'selected' : '' }}>Most Hated</option>
+            </select>
+        </form>
+    </div>
 
     <div class="row justify-content-center">
         <div id="movie-list" class="col-lg-10">
