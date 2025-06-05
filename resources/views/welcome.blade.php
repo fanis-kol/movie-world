@@ -31,6 +31,10 @@
                 <option value="hates" {{ request('sort') === 'hates' ? 'selected' : '' }}>Most Hated</option>
             </select>
         </form>
+
+        @if(request()->filled('user_id'))
+            <input type="hidden" name="user_id" value="{{ request('user_id') }}">
+        @endif
     </div>
 
     <div class="row justify-content-center">
@@ -48,10 +52,14 @@
     let currentPage = 1;
     let loading = false;
     let currentSort = '';
-
+    let currentUserId = '';
 
     document.addEventListener('DOMContentLoaded', function () {
-        currentSort  = document.getElementById('sort');
+        currentSort = document.getElementById('sort');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        currentUserId = urlParams.get('user_id') || '';
+
         if (currentSort) {
             currentSort.addEventListener('change', function () {
                 document.getElementById('filter-form').submit();
@@ -67,16 +75,21 @@
             loading = true;
             currentPage++;
 
-        fetch(`/load-more?page=${currentPage}&sort=${encodeURIComponent(currentSort.value)}`)
+            let url = `/load-more?page=${currentPage}&sort=${encodeURIComponent(currentSort.value)}`;
+            if (currentUserId) {
+                url += `&user_id=${encodeURIComponent(currentUserId)}`;
+            }
 
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('movie-list')
-                .insertAdjacentHTML('beforeend', html);
-            })
-            .finally(() => {
-                loading = false;
-            });
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('movie-list')
+                        .insertAdjacentHTML('beforeend', html);
+                })
+                .finally(() => {
+                    loading = false;
+                });
         }
     });
+
 </script>

@@ -7,27 +7,18 @@ use App\Models\Movie;
 
 class MovieController extends Controller
 {
-    //
-    public function index(Request $request){
-        $query = Movie::with('user')
-            ->withCount([
-                'votes as likes_count' => fn ($q) => $q->where('vote', 1),
-                'votes as hates_count' => fn ($q) => $q->where('vote', -1),
-            ]);
-        switch ($request->get('sort')) {
-            case 'likes':
-                $query->orderByDesc('likes_count');
-                break;
-            case 'hates':
-                $query->orderByDesc('hates_count');
-                break;
-            default:
-                $query->orderByDesc('created_at');
+    public function index(Request $request)
+    {
+        $query = $this->moviesQuery();
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->get('user_id'));
         }
 
+        $query = $this->applySorting($query, $request->get('sort'));
 
         $movies = $query->paginate(10);
-        $allMovies = Movie::all()->count();
+        $allMovies = Movie::count();
 
         if ($request->ajax()) {
             $html = '';
@@ -40,9 +31,16 @@ class MovieController extends Controller
         return view('welcome', compact('movies', 'allMovies'));
     }
 
-    public function loadMore(Request $request){
+    public function loadMore(Request $request)
+    {
         $query = $this->moviesQuery();
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->get('user_id'));
+        }
+
         $query = $this->applySorting($query, $request->get('sort'));
+
         $movies = $query->paginate(10);
 
         $html = '';
@@ -53,8 +51,8 @@ class MovieController extends Controller
         return response($html);
     }
 
-
-    protected function moviesQuery(){
+    protected function moviesQuery()
+    {
         return Movie::with('user')
             ->withCount([
                 'votes as likes_count' => fn($q) => $q->where('vote', 1),
@@ -62,17 +60,12 @@ class MovieController extends Controller
             ]);
     }
 
-
     protected function applySorting($query, $sort)
     {
-        switch ($sort) {
-            case 'likes':
-                return $query->orderByDesc('likes_count');
-            case 'hates':
-                return $query->orderByDesc('hates_count');
-            default:
-                return $query->orderByDesc('created_at');
-        }
+        return match ($sort) {
+            'likes' => $query->orderByDesc('likes_count'),
+            'hates' => $query->orderByDesc('hates_count'),
+            default => $query->orderByDesc('created_at'),
+        };
     }
-
 }
