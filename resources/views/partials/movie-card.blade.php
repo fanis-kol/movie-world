@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="d-flex justify-content-between">
             <h2 class="card-title h5">{{ $movie->title }}</h2>
-            <p class="card-date">{{ $movie->created_at }} </p>
+            <p class="card-date">{{ $movie->created_at->diffForHumans() }} </p>
         </div>
         <p class="card-text">{{ $movie->description }}</p>
         <div class="d-flex justify-content-between small">
