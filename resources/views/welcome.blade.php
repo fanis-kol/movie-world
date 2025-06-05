@@ -24,21 +24,35 @@
     </div>
 
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <div id="movie-list" class="col-lg-10">
             @foreach ($movies as $movie)
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h2 class="card-title h5">{{ $movie->title }}</h2>
-                        <p class="card-text">{{ $movie->description }}</p>
-                        <p class="text-muted small">Posted by: {{ $movie->user->name }}</p>
-                    </div>
-                </div>
+                @include('partials.movie-card', ['movie' => $movie])
             @endforeach
-
-            <div class="mt-4">
-                {{ $movies->links() }}
-            </div>
         </div>
     </div>
 @endsection
 
+
+<script>
+ let currentPage = 1;
+let loading = false;
+
+window.addEventListener('scroll', () => {
+  const scrollPosition = window.scrollY + window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+
+  if (scrollPosition + 100 >= documentHeight && !loading) {
+    currentPage++;
+
+    fetch(`/load-more?page=${currentPage}`)
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('movie-list')
+          .insertAdjacentHTML('beforeend', html);
+      })
+      .finally(() => {
+        loading = false;
+      });
+  }
+});
+</script>

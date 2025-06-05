@@ -12,7 +12,6 @@ class Movie extends Model
         'user_id',
     ];
 
-    // Optional: Define relationship with User
     public function user()
     {
         return $this->belongsTo(User::class);
