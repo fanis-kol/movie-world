@@ -11,6 +11,7 @@ Route::get('/', [MovieController::class, 'index']);
 Route::get('/load-more', [MovieController::class, 'loadMore']);
 
 Route::get('/new-movie', [MovieController::class, 'newMovie'])->name('new.movie');
+Route::post('/store-movie', [MovieController::class, 'storeMovie'])->name('store.movie');
 
 
 Route::middleware('auth')->group(function () {

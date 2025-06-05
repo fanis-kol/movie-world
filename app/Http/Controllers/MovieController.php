@@ -63,6 +63,39 @@ class MovieController extends Controller
         return view('new-movie', compact('user'));
     }
 
+    public function storeMovie(Request $request)
+    {
+        try {
+
+            $user = Auth::user();
+
+            if(!$user){
+                return redirect('/login');
+            }
+
+            $validated = $request->validate([
+                'title' => 'required|string|max:60',
+                'description' => 'required|string|max:250',
+            ]);
+
+            $movie = new Movie($validated);
+            $movie->user_id = $user->id;
+            $movie->save();
+
+            return redirect('/')->with('success', 'Movie added successfully.');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'An unexpected error occurred: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
 
     protected function moviesQuery()
     {
