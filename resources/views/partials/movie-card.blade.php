@@ -1,6 +1,9 @@
 <div class="card mb-4">
     <div class="card-body">
-        <h2 class="card-title h5">{{ $movie->title }}</h2>
+        <div class="d-flex justify-content-between">
+            <h2 class="card-title h5">{{ $movie->title }}</h2>
+            <p class="card-date">{{ $movie->created_at }} </p>
+        </div>
         <p class="card-text">{{ $movie->description }}</p>
         <div class="d-flex justify-content-between small">
             <div>

@@ -78,7 +78,7 @@ class MovieSeeder extends Seeder
                 'title' => $title,
                 'description' => $description,
                 'user_id' => $users->random()->id,
-                'created_at' => Carbon::now(),
+                'created_at' => Carbon::now()->subDays(rand(1, 365))->subHours(rand(0, 23))->subMinutes(rand(0, 59)),
                 'updated_at' => Carbon::now(),
             ]);
         }
