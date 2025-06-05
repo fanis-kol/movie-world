@@ -30,11 +30,12 @@
                 <option value="likes" {{ request('sort') === 'likes' ? 'selected' : '' }}>Most Liked</option>
                 <option value="hates" {{ request('sort') === 'hates' ? 'selected' : '' }}>Most Hated</option>
             </select>
+
+            @if(request()->filled('user_id'))
+                <input type="hidden" name="user_id" value="{{ request('user_id') }}">
+            @endif
         </form>
 
-        @if(request()->filled('user_id'))
-            <input type="hidden" name="user_id" value="{{ request('user_id') }}">
-        @endif
     </div>
 
     <div class="row justify-content-center">
