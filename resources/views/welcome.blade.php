@@ -3,21 +3,6 @@
 @section('title', 'Home')
 
 @section('content')
-    <header class="mb-4">
-        @if (Route::has('login'))
-            <nav class="d-flex justify-content-end gap-2">
-                @auth
-                    <a href="{{ url('/dashboard') }}" class="btn btn-outline-secondary btn-sm">Dashboard</a>
-                @else
-                    <a href="{{ route('login') }}" class="btn btn-link btn-sm">Log in</a>
-                    @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="btn btn-outline-primary btn-sm">Register</a>
-                    @endif
-                @endauth
-            </nav>
-        @endif
-    </header>
-
     <div class="row text-center mb-5">
         <h1 class="display-5 fw-bold">Welcome to Movie World</h1>
         <p class="lead text-muted">Our complete movie list — <span class="fw-bold">{{$allMovies}}</span> titles.</p>

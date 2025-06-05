@@ -8,11 +8,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MovieController::class, 'index']);
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/load-more', [MovieController::class, 'loadMore']);
+
+Route::get('/new-movie', [MovieController::class, 'newMovie']);
 
 
 Route::middleware('auth')->group(function () {

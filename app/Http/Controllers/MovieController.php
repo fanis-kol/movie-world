@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use Auth;
 
 class MovieController extends Controller
 {
@@ -50,6 +51,18 @@ class MovieController extends Controller
 
         return response($html);
     }
+
+    public function newMovie()
+    {
+        $user = Auth::user();
+
+        if(!$user){
+            return redirect('/login');
+        }
+
+        return view('new-movie', compact('user'));
+    }
+
 
     protected function moviesQuery()
     {
