@@ -9,14 +9,14 @@ class MovieController extends Controller
 {
     //
     public function index(){
-        $movies = Movie::with('user')->paginate(10);
+        $movies = $this->moviesQuery()->paginate(10);
 
         return view('welcome', compact('movies'));
     }
 
     public function loadMore(Request $request)
     {
-        $movies = Movie::with('user')->paginate(10);
+        $movies = $this->moviesQuery()->paginate(10);
 
         $html = '';
         foreach ($movies as $movie) {
@@ -24,5 +24,15 @@ class MovieController extends Controller
         }
 
         return response($html);
+    }
+
+
+    protected function moviesQuery()
+    {
+        return Movie::with('user')
+            ->withCount([
+                'votes as likes_count' => fn($q) => $q->where('vote', 1),
+                'votes as hates_count' => fn($q) => $q->where('vote', -1),
+            ]);
     }
 }
