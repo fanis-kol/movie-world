@@ -23,6 +23,14 @@
         <p class="lead text-muted">Our complete movie list — <span class="fw-bold">{{$allMovies}}</span> titles.</p>
     </div>
 
+    <form id="filter-form" class="text-end" method="GET" class="mb-3">
+        <select name="sort" id="sort" class="form-select w-auto d-inline-block">
+            <option value="" selected >Newest</option>
+            <option value="likes" {{ request('sort') === 'likes' ? 'selected' : '' }}>Most Liked</option>
+            <option value="hates" {{ request('sort') === 'hates' ? 'selected' : '' }}>Most Hated</option>
+        </select>
+    </form>
+
     <div class="row justify-content-center">
         <div id="movie-list" class="col-lg-10">
             @foreach ($movies as $movie)
@@ -30,29 +38,43 @@
             @endforeach
         </div>
     </div>
+
 @endsection
 
 
 <script>
- let currentPage = 1;
-let loading = false;
+    let currentPage = 1;
+    let loading = false;
+    let currentSort = '';
 
-window.addEventListener('scroll', () => {
-  const scrollPosition = window.scrollY + window.innerHeight;
-  const documentHeight = document.documentElement.scrollHeight;
 
-  if (scrollPosition + 100 >= documentHeight && !loading) {
-    currentPage++;
+    document.addEventListener('DOMContentLoaded', function () {
+        currentSort  = document.getElementById('sort');
+        if (currentSort) {
+            currentSort.addEventListener('change', function () {
+                document.getElementById('filter-form').submit();
+            });
+        }
+    });
 
-    fetch(`/load-more?page=${currentPage}`)
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('movie-list')
-          .insertAdjacentHTML('beforeend', html);
-      })
-      .finally(() => {
-        loading = false;
-      });
-  }
-});
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY + window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+
+        if (scrollPosition + 100 >= documentHeight && !loading) {
+            loading = true;
+            currentPage++;
+
+        fetch(`/load-more?page=${currentPage}&sort=${encodeURIComponent(currentSort.value)}`)
+
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('movie-list')
+                .insertAdjacentHTML('beforeend', html);
+            })
+            .finally(() => {
+                loading = false;
+            });
+        }
+    });
 </script>
