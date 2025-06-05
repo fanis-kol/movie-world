@@ -20,7 +20,7 @@
 
     <div class="text-center mb-5">
         <h1 class="display-5 fw-bold">Welcome to Movie World</h1>
-        <p class="lead text-muted">Your favorite movies all in one place.</p>
+        <p class="lead text-muted">Our complete movie list — <span class="fw-bold">{{$allMovies}}</span> titles.</p>
     </div>
 
     <div class="row justify-content-center">

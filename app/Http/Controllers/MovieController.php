@@ -10,8 +10,9 @@ class MovieController extends Controller
     //
     public function index(){
         $movies = $this->moviesQuery()->paginate(10);
+        $allMovies = Movie::all()->count();
 
-        return view('welcome', compact('movies'));
+        return view('welcome', compact('movies', 'allMovies'));
     }
 
     public function loadMore(Request $request)
