@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-1 px-sm-3">
   <div class="container-fluid d-flex justify-content-between align-items-center">
     <!-- Left side: Movie World title -->
     <a class="navbar-brand fw-bold" href="{{ url('/') }}">
