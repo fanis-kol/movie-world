@@ -10,6 +10,15 @@
                 <div class="alert alert-danger">{{ session('error') }}</div>
             @endif
 
+
+            @if ($errors->any())
+                <ul class="alert alert-danger list-unstyled">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
+
             <form id="movie-form" action="{{ route('store.movie') }}" method="POST" class="mb-4">
                 @csrf
 

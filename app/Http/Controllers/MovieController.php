@@ -75,8 +75,10 @@ class MovieController extends Controller
             }
 
             $validated = $request->validate([
-                'title' => 'required|string|max:60',
+                'title' => 'required|string|max:60|unique:movies,title',
                 'description' => 'required|string|max:250',
+            ], [
+                'title.unique' => 'A movie with this title already exists.',
             ]);
 
             $movie = new Movie($validated);
