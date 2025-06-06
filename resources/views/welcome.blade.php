@@ -10,7 +10,7 @@
 
     <div class="row d-flex align-items-center">
         <div class="col-6 col-lg-4 offset-lg-1 text-start">
-            <a href="{{ url('/') }}" class="btn btn-outline-dark">Reset Filters</a>
+            <a href="{{ url('/') }}" class="btn">Reset Filters</a>
         </div>
         <div class="col-6 text-end">
             <form id="filter-form" method="GET" class="d-inline-block">
