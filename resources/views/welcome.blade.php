@@ -4,17 +4,17 @@
 
 @section('content')
     <div class="row text-center mb-5">
-        <h1 class="display-5 fw-bold">Welcome to Movie World</h1>
+        <h1 class="display-6 fw-bold">Welcome to Movie World</h1>
         <p class="lead text-muted">Our complete movie list — <span class="fw-bold">{{$allMovies}}</span> titles.</p>
     </div>
 
     <div class="row d-flex align-items-center">
         <div class="col-6 col-lg-4 offset-lg-1 text-start">
-            <a href="{{ url('/') }}" class="btn btn-outline-secondary">Reset Filters</a>
+            <a href="{{ url('/') }}" class="btn btn-outline-dark">Reset Filters</a>
         </div>
         <div class="col-6 text-end">
             <form id="filter-form" method="GET" class="d-inline-block">
-                <select name="sort" id="sort" class="form-select w-auto d-inline-block">
+                <select name="sort" id="sort" class=" mt-2 form-select w-auto d-inline-block">
                     <option value="" {{ request('sort') === null ? 'selected' : '' }}>Newest</option>
                     <option value="likes" {{ request('sort') === 'likes' ? 'selected' : '' }}>Most Liked</option>
                     <option value="hates" {{ request('sort') === 'hates' ? 'selected' : '' }}>Most Hated</option>
@@ -84,36 +84,31 @@
 
 
     document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.vote-btn').forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const btn = e.currentTarget;
-                const movieId = btn.getAttribute('meta-id');
-                const voteValue = parseInt(btn.getAttribute('data-vote'));
+        document.body.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('vote-btn')) {
+            const btn = e.target;
+            const movieId = btn.getAttribute('meta-id');
+            const voteValue = parseInt(btn.getAttribute('data-vote'));
 
-                try {
-                    const response = await fetch('/vote', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({ movie_id: movieId, vote: voteValue })
-                    });
+            try {
+                const response = await fetch('/vote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ movie_id: movieId, vote: voteValue })
+                });
 
-                    if (!response.ok) throw new Error('Failed to send vote');
+                if (!response.ok) throw new Error('Failed to send vote');
 
-                    const data = await response.json();
-                    console.log(data);
+                const data = await response.json();
+                console.log(data);
 
-                    // const movieCard = document.getElementById(`movie-${movieId}`);
-                    // if (movieCard) {
-                    //     movieCard.querySelector('.likes-count').textContent = data.likes;
-                    //     movieCard.querySelector('.hates-count').textContent = data.hates;
-                    // }
-                } catch (error) {
-                    alert(error.message);
-                }
-            });
+            } catch (error) {
+                alert(error.message);
+            }
+            }
         });
     });
 

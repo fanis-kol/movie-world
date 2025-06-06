@@ -150,13 +150,21 @@ class MovieController extends Controller
 
     protected function moviesQuery()
     {
+        $userId = auth()->id();
+
         return Movie::with('user')
             ->withCount([
                 'votes as likes_count' => fn($q) => $q->where('vote', 1),
                 'votes as hates_count' => fn($q) => $q->where('vote', -1),
-            ]);
+            ])
+            ->with(['votes' => function ($query) use ($userId) {
+                if ($userId) {
+                    $query->where('user_id', $userId);
+                } else {
+                    $query->whereRaw('1 = 0');
+                }
+            }]);
     }
-
     protected function applySorting($query, $sort)
     {
         return match ($sort) {

@@ -18,8 +18,17 @@
         </div>
         @if(Auth::check())
         <div class="d-flex gap-2 justify-content-end mt-3">
-            <button class="btn btn-success btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="1">Like</button>
-            <button class="btn btn-danger btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="-1">Hate</button>
+            @if($movie->votes->isNotEmpty() && $movie->votes->first()->vote == 1)
+                <button class="btn btn-success btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="1">Like</button>
+            @else
+                 <button class="btn btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="1">Like</button>
+            @endif
+
+            @if($movie->votes->isNotEmpty() && $movie->votes->first()->vote == -1)
+                <button class="btn btn-danger btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="-1">Hate</button>
+            @else
+                <button class="btn  btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="-1">Hate</button>
+            @endif
         </div>
         @endif
     </div>
