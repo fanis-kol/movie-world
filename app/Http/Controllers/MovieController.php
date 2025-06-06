@@ -122,9 +122,11 @@ class MovieController extends Controller
         if ($vote) {
             if ($vote->vote == $newVote) {
                 $vote->delete();
+                $currentVote = 0;
             } else {
                 $vote->vote = $newVote;
                 $vote->save();
+                $currentVote = $newVote;
             }
         } else {
             if ($newVote !== 0) {
@@ -133,6 +135,9 @@ class MovieController extends Controller
                     'movie_id' => $movieId,
                     'vote' => $newVote,
                 ]);
+                $currentVote = $newVote;
+            } else {
+                $currentVote = 0;
             }
         }
 
@@ -143,6 +148,7 @@ class MovieController extends Controller
             'message' => 'Vote updated',
             'likes' => $likesCount,
             'hates' => $hatesCount,
+            'currentVote' => $currentVote
         ]);
 
     }
