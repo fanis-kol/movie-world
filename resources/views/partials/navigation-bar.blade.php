@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-3 mb-4">
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
   <div class="container-fluid d-flex justify-content-between align-items-center">
     <!-- Left side: Movie World title -->
     <a class="navbar-brand fw-bold" href="{{ url('/') }}">
@@ -14,7 +14,8 @@
             <button type="submit" class="btn btn-outline-primary btn-sm">Logout</button>
           </form>
         @else
-          <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">Login</a>
+            <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">Login</a>
+            <a href="{{ route('register') }}" class="btn btn-outline-primary btn-sm">Register</a>
         @endauth
       </div>
       @auth
