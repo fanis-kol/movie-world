@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row text-center mb-5">
-        <h1 class="display-6 fw-bold">Welcome to Movie World</h1>
+        <h1 class="display-6 fw-bold">Welcome to MovieWorld</h1>
         <p class="lead text-muted">Our complete movie list — <span class="fw-bold">{{$allMovies}}</span> titles.</p>
     </div>
 

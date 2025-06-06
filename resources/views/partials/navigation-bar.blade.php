@@ -2,7 +2,7 @@
   <div class="container-fluid d-flex justify-content-between align-items-center">
     <!-- Left side: Movie World title -->
     <a class="navbar-brand fw-bold" href="{{ url('/') }}">
-      Movie World
+      MovieWorld
     </a>
 
     <div class="d-flex flex-column align-items-end">
