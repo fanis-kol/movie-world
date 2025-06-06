@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Models\Vote;
 use Auth;
 
 class MovieController extends Controller
@@ -94,6 +95,56 @@ class MovieController extends Controller
                 ->with('error', 'An unexpected error occurred: ' . $e->getMessage())
                 ->withInput();
         }
+    }
+
+    public function voteMovie(Request $request)
+    {
+
+        $user = Auth::user();
+
+        if(!$user){
+            return redirect('/login');
+        }
+
+
+        $request->validate([
+            'movie_id' => 'required|integer|exists:movies,id',
+            'vote' => 'required|integer|in:-1,0,1',
+        ]);
+
+        $movieId = $request->movie_id;
+        $newVote = $request->vote;
+
+        $vote = Vote::where('user_id', $user->id)
+                    ->where('movie_id', $movieId)
+                    ->first();
+
+        if ($vote) {
+            if ($vote->vote == $newVote) {
+                $vote->delete();
+            } else {
+                $vote->vote = $newVote;
+                $vote->save();
+            }
+        } else {
+            if ($newVote !== 0) {
+                Vote::create([
+                    'user_id' => $user->id,
+                    'movie_id' => $movieId,
+                    'vote' => $newVote,
+                ]);
+            }
+        }
+
+        $likesCount = Vote::where('movie_id', $movieId)->where('vote', 1)->count();
+        $hatesCount = Vote::where('movie_id', $movieId)->where('vote', -1)->count();
+
+        return response()->json([
+            'message' => 'Vote updated',
+            'likes' => $likesCount,
+            'hates' => $hatesCount,
+        ]);
+
     }
 
 

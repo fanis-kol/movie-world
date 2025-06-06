@@ -82,4 +82,39 @@
         }
     });
 
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.vote-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const btn = e.currentTarget;
+                const movieId = btn.getAttribute('meta-id');
+                const voteValue = parseInt(btn.getAttribute('data-vote'));
+
+                try {
+                    const response = await fetch('/vote', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ movie_id: movieId, vote: voteValue })
+                    });
+
+                    if (!response.ok) throw new Error('Failed to send vote');
+
+                    const data = await response.json();
+                    console.log(data);
+
+                    // const movieCard = document.getElementById(`movie-${movieId}`);
+                    // if (movieCard) {
+                    //     movieCard.querySelector('.likes-count').textContent = data.likes;
+                    //     movieCard.querySelector('.hates-count').textContent = data.hates;
+                    // }
+                } catch (error) {
+                    alert(error.message);
+                }
+            });
+        });
+    });
+
 </script>
