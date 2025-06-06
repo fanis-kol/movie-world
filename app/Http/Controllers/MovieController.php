@@ -107,12 +107,22 @@ class MovieController extends Controller
         }
 
 
+        $movieId = $request->movie_id;
+        $movie = Movie::find($movieId);
+
+        if (!$movie) {
+            return response()->json(['error' => 'Movie not found'], 404);
+        }
+
+        if ($movie->user_id === $user->id) {
+            return response()->json(['error' => 'You cannot vote on your own movie.'], 403);
+        }
+
         $request->validate([
             'movie_id' => 'required|integer|exists:movies,id',
             'vote' => 'required|integer|in:-1,0,1',
         ]);
 
-        $movieId = $request->movie_id;
         $newVote = $request->vote;
 
         $vote = Vote::where('user_id', $user->id)
