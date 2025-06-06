@@ -7,7 +7,7 @@
         <p class="card-text">{{ $movie->description }}</p>
         <div class="d-flex justify-content-between small">
             <div>
-                Likes: {{ $movie->likes_count }} | Hates: {{ $movie->hates_count }}
+                Likes: <span id="likes-{{ $movie->id }}">{{ $movie->likes_count }}</span> | Hates: <span id="hates-{{ $movie->id }}"> {{ $movie->hates_count }}</span>
             </div>
             <div class="text-muted">
                 Posted by:
@@ -19,15 +19,23 @@
         @if(Auth::check())
         <div class="d-flex gap-2 justify-content-end mt-3">
             @if($movie->votes->isNotEmpty() && $movie->votes->first()->vote == 1)
-                <button class="btn btn-success btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="1">Like</button>
+                <button class="btn btn-success btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="1">
+                    Like
+                </button>
             @else
-                 <button class="btn btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="1">Like</button>
+                <button class="btn btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="1">
+                    Like
+                </button>
             @endif
 
             @if($movie->votes->isNotEmpty() && $movie->votes->first()->vote == -1)
-                <button class="btn btn-danger btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="-1">Hate</button>
+                <button class="btn btn-danger btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="-1">
+                    Hate
+                </button>
             @else
-                <button class="btn  btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="-1">Hate</button>
+                <button class="btn  btn-sm vote-btn" meta-id="{{ $movie->id }}" data-vote="-1">
+                    Hate
+                </button>
             @endif
         </div>
         @endif

@@ -103,16 +103,12 @@
                 if (!response.ok) throw new Error('Failed to send vote');
 
                 const data = await response.json();
-                console.log(data);
                 const movieButtons = document.querySelectorAll(`.vote-btn[meta-id="${movieId}"]`);
 
                 movieButtons.forEach(button => {
                     const btnVote = parseInt(button.getAttribute('data-vote'));
                     button.classList.remove('btn-success', 'btn-danger');
 
-                    console.log(btnVote);
-                    console.log(data);
-                    console.log(data.currentVote);
                     if (btnVote === data.currentVote) {
                         if (btnVote === 1) {
                         button.classList.add('btn-success');
@@ -120,6 +116,10 @@
                         button.classList.add('btn-danger');
                         }
                     }
+
+
+                    document.getElementById(`likes-${movieId}`).textContent = data.likes;
+                    document.getElementById(`hates-${movieId}`).textContent = data.hates;
                 });
 
 
